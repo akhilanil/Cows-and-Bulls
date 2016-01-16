@@ -1,0 +1,104 @@
+class Game
+
+	def initialize
+      @num =0
+      @try=0
+      @flag=0
+      
+      @number=Array.new
+      @trying=Array.new
+      
+      @cows=0
+      @bulls=0
+
+      @count=1;
+    end
+	def start
+		puts "Hello There lets play cows and bulls..!!"
+		puts "Press any key to make computer think of a number..!!"
+		gets.chomp;	
+		while @number.length<4
+			v=Random.rand(0...9)
+			@number << v unless  @number.include? v
+		end
+		#puts @number
+	end
+	def cow_Check
+		for i in @number
+			for j in @trying
+				
+				if i==j
+					
+					if @trying.index(j)!=@number.index(i)
+						@cows=@cows+1;
+					end
+				end
+			end
+		end
+		return @cows
+	end
+	
+	def bull_Check
+		
+		for i in @number
+			for j in @trying
+				
+				if i==j
+					
+					if @trying.index(j)==@number.index(i)
+						@bulls=@bulls+1;
+					end
+				end
+			end
+		end
+		return @bulls
+	end
+
+	def user
+		puts "So lets begin..!!"
+		puts "\nGuess the Number..!!\nYou have 7 tries  "
+		
+		
+		7.times do
+			if @count!=1
+				puts "Previous Try: #{@try}" 
+			end
+			print "\n Try #{@count}: "
+			@try=gets.to_i;
+			@trying=@try.to_s.split('').map { |digit| digit.to_i }
+			if @trying==@number
+				@flag=1;
+				if @count==1
+					puts "Congoo...!!!! You managed to do within #{@count} try"
+				else
+					puts "Congoo...!!!! You managed to do within #{@count} tries"
+				end
+				break
+			else
+				puts "Gone Wrong..!!"
+				
+		
+				
+				@cows=cow_Check
+				puts @cows
+				@bulls=bull_Check
+				puts @bulls
+				puts "#{@bulls} bull(s) and #{@cows} cow(s)"
+				@cows=0
+				@bulls=0
+				@count=@count+1
+				#break
+			end
+		end
+		if @flag==0
+			puts "Exceeded Maximum number of tries..!!"	
+			print"The Number was: #{@number}"
+		end	
+			puts "Thankyou for playing..!!"
+	end
+end
+
+
+p=Game.new
+p.start
+p.user
